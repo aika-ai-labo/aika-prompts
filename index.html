@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌸 魔法少女化プロンプト｜アイカ🌸AI最前線ラボ</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Zen+Maru+Gothic:wght@500;700;900&display=swap');
+
+  :root {
+    --pink-light: #FFE4F0;
+    --pink: #FF97B7;
+    --pink-deep: #FF5B96;
+    --purple-light: #EBDEFF;
+    --purple: #A58AFF;
+    --purple-deep: #7B5FFF;
+    --gold: #FFD700;
+    --gold-deep: #FFB800;
+    --cream: #FFF8FB;
+    --white: #ffffff;
+    --text: #4A2968;
+    --text-light: #8A6BB0;
+    --accent: #FF3D7F;
+    --ok: #10b981;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: "Zen Maru Gothic", "Noto Sans JP", -apple-system, sans-serif;
+    background: linear-gradient(135deg, #FFE4F0 0%, #EBDEFF 50%, #FFE4F0 100%);
+    background-attachment: fixed;
+    color: var(--text);
+    line-height: 1.8;
+    font-size: 15px;
+    overflow-x: hidden;
+  }
+  /* キラキラ背景エフェクト */
+  .sparkle-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .sparkle {
+    position: absolute;
+    font-size: 24px;
+    opacity: 0;
+    animation: twinkle-float 8s infinite ease-in-out;
+    will-change: transform, opacity;
+  }
+  /* 各キラキラの位置と動きをバラバラに */
+  .sparkle:nth-child(1)  { top: 5%;  left: 8%;   font-size: 28px; animation-delay: 0s;    animation-duration: 7s;  }
+  .sparkle:nth-child(2)  { top: 12%; left: 85%;  font-size: 22px; animation-delay: 1.2s;  animation-duration: 9s;  }
+  .sparkle:nth-child(3)  { top: 20%; left: 45%;  font-size: 26px; animation-delay: 2.5s;  animation-duration: 8s;  }
+  .sparkle:nth-child(4)  { top: 28%; left: 15%;  font-size: 20px; animation-delay: 0.8s;  animation-duration: 10s; }
+  .sparkle:nth-child(5)  { top: 35%; left: 72%;  font-size: 30px; animation-delay: 3s;    animation-duration: 7.5s;}
+  .sparkle:nth-child(6)  { top: 42%; left: 30%;  font-size: 18px; animation-delay: 1.8s;  animation-duration: 9s;  }
+  .sparkle:nth-child(7)  { top: 50%; left: 90%;  font-size: 24px; animation-delay: 4s;    animation-duration: 8.5s;}
+  .sparkle:nth-child(8)  { top: 58%; left: 5%;   font-size: 26px; animation-delay: 2s;    animation-duration: 9.5s;}
+  .sparkle:nth-child(9)  { top: 65%; left: 55%;  font-size: 22px; animation-delay: 3.5s;  animation-duration: 7s;  }
+  .sparkle:nth-child(10) { top: 72%; left: 25%;  font-size: 28px; animation-delay: 0.5s;  animation-duration: 10s; }
+  .sparkle:nth-child(11) { top: 80%; left: 80%;  font-size: 20px; animation-delay: 2.8s;  animation-duration: 8s;  }
+  .sparkle:nth-child(12) { top: 88%; left: 40%;  font-size: 24px; animation-delay: 1.5s;  animation-duration: 9s;  }
+  .sparkle:nth-child(13) { top: 15%; left: 60%;  font-size: 18px; animation-delay: 4.2s;  animation-duration: 7.5s;}
+  .sparkle:nth-child(14) { top: 48%; left: 50%;  font-size: 16px; animation-delay: 0.3s;  animation-duration: 11s; }
+  .sparkle:nth-child(15) { top: 25%; left: 92%;  font-size: 22px; animation-delay: 3.8s;  animation-duration: 8s;  }
+  .sparkle:nth-child(16) { top: 55%; left: 20%;  font-size: 26px; animation-delay: 1.1s;  animation-duration: 9.5s;}
+  .sparkle:nth-child(17) { top: 68%; left: 72%;  font-size: 20px; animation-delay: 2.3s;  animation-duration: 8s;  }
+  .sparkle:nth-child(18) { top: 8%;  left: 35%;  font-size: 24px; animation-delay: 3.2s;  animation-duration: 7s;  }
+  .sparkle:nth-child(19) { top: 38%; left: 95%;  font-size: 18px; animation-delay: 0.7s;  animation-duration: 10s; }
+  .sparkle:nth-child(20) { top: 92%; left: 12%;  font-size: 22px; animation-delay: 2.6s;  animation-duration: 8.5s;}
+
+  /* キラキラアニメーション：輝く＋浮き上がる＋回転 */
+  @keyframes twinkle-float {
+    0% {
+      opacity: 0;
+      transform: translateY(0) scale(0.5) rotate(0deg);
+    }
+    20% {
+      opacity: 0.8;
+      transform: translateY(-10px) scale(1) rotate(90deg);
+    }
+    50% {
+      opacity: 1;
+      transform: translateY(-25px) scale(1.2) rotate(180deg);
+    }
+    80% {
+      opacity: 0.6;
+      transform: translateY(-40px) scale(0.9) rotate(270deg);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-60px) scale(0.4) rotate(360deg);
+    }
+  }
+
+  /* 小さな粒子（輝くだけ・動かないタイプ） */
+  .sparkle-dot {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: radial-gradient(circle, #FFFFFF 0%, rgba(255,215,0,0.8) 50%, transparent 100%);
+    border-radius: 50%;
+    animation: twinkle-pulse 3s infinite ease-in-out;
+    box-shadow: 0 0 10px rgba(255,215,0,0.6);
+  }
+  .sparkle-dot:nth-child(odd) {
+    background: radial-gradient(circle, #FFFFFF 0%, rgba(255,151,183,0.8) 50%, transparent 100%);
+    box-shadow: 0 0 10px rgba(255,151,183,0.6);
+  }
+  .sparkle-dot:nth-child(21) { top: 10%; left: 20%; animation-delay: 0s;   }
+  .sparkle-dot:nth-child(22) { top: 22%; left: 75%; animation-delay: 0.5s; }
+  .sparkle-dot:nth-child(23) { top: 35%; left: 40%; animation-delay: 1s;   }
+  .sparkle-dot:nth-child(24) { top: 45%; left: 85%; animation-delay: 1.5s; }
+  .sparkle-dot:nth-child(25) { top: 58%; left: 30%; animation-delay: 2s;   }
+  .sparkle-dot:nth-child(26) { top: 70%; left: 65%; animation-delay: 2.5s; }
+  .sparkle-dot:nth-child(27) { top: 82%; left: 50%; animation-delay: 0.8s; }
+  .sparkle-dot:nth-child(28) { top: 15%; left: 55%; animation-delay: 1.2s; }
+  .sparkle-dot:nth-child(29) { top: 40%; left: 10%; animation-delay: 1.8s; }
+  .sparkle-dot:nth-child(30) { top: 65%; left: 15%; animation-delay: 2.3s; }
+
+  @keyframes twinkle-pulse {
+    0%, 100% {
+      opacity: 0;
+      transform: scale(0.5);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.8);
+    }
+  }
+
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 30px 20px 80px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ヒーローセクション */
+  .hero {
+    background: linear-gradient(135deg, #FF97B7 0%, #A58AFF 100%);
+    color: white;
+    padding: 50px 30px;
+    border-radius: 30px;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(255,151,183,0.35);
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 30px;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.3) 1px, transparent 1px);
+    background-size: 20px 20px;
+    opacity: 0.5;
+    animation: sparkle 30s linear infinite;
+  }
+  @keyframes sparkle {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  .hero-content {
+    position: relative;
+    z-index: 1;
+  }
+  .hero .ribbon {
+    display: inline-block;
+    background: white;
+    color: var(--pink-deep);
+    padding: 8px 24px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 13px;
+    margin-bottom: 16px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+  }
+  .hero h1 {
+    margin: 0 0 14px;
+    font-size: 28px;
+    font-weight: 900;
+    letter-spacing: 0.03em;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.15);
+  }
+  .hero .subtitle {
+    font-size: 15px;
+    opacity: 0.95;
+    margin: 0 0 20px;
+  }
+  .hero .from {
+    font-size: 13px;
+    opacity: 0.85;
+    background: rgba(255,255,255,0.2);
+    display: inline-block;
+    padding: 6px 20px;
+    border-radius: 999px;
+  }
+
+  /* サンプル画像セクション（ヒーロー下） */
+  .sample-showcase {
+    background: white;
+    border-radius: 24px;
+    padding: 24px;
+    margin-bottom: 24px;
+    text-align: center;
+    box-shadow: 0 12px 40px rgba(255,151,183,0.2);
+    border: 3px solid white;
+    position: relative;
+    overflow: hidden;
+  }
+  .sample-showcase::before {
+    content: '✨';
+    position: absolute;
+    top: 12px;
+    left: 15px;
+    font-size: 24px;
+    animation: twinkle-pulse 2s infinite;
+  }
+  .sample-showcase::after {
+    content: '✨';
+    position: absolute;
+    top: 12px;
+    right: 15px;
+    font-size: 24px;
+    animation: twinkle-pulse 2s infinite 1s;
+  }
+  .sample-showcase .sample-label {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--pink), var(--purple));
+    color: white;
+    padding: 6px 20px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 14px;
+    letter-spacing: 0.08em;
+  }
+  .sample-showcase h3 {
+    margin: 0 0 6px;
+    color: var(--pink-deep);
+    font-size: 18px;
+    font-weight: 900;
+  }
+  .sample-showcase .sample-sub {
+    font-size: 13px;
+    color: var(--text-light);
+    margin: 0 0 18px;
+  }
+  .sample-image-wrap {
+    position: relative;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(165,138,255,0.25);
+    border: 2px solid var(--pink-light);
+  }
+  .sample-image-wrap img {
+    display: block;
+    width: 100%;
+    height: auto;
+    transition: transform 0.5s ease;
+  }
+  .sample-image-wrap:hover img {
+    transform: scale(1.02);
+  }
+  .sample-caption {
+    margin-top: 14px;
+    font-size: 12px;
+    color: var(--text-light);
+    font-style: italic;
+  }
+
+  /* 挨拶セクション */
+  .greeting {
+    background: white;
+    border-radius: 24px;
+    padding: 30px 28px;
+    margin-bottom: 24px;
+    box-shadow: 0 8px 24px rgba(165,138,255,0.12);
+    border: 3px solid white;
+    position: relative;
+  }
+  .greeting::before {
+    content: '🌸';
+    position: absolute;
+    top: -15px;
+    left: 20px;
+    font-size: 30px;
+  }
+  .greeting h2 {
+    margin: 0 0 14px;
+    color: var(--pink-deep);
+    font-size: 18px;
+    font-weight: 900;
+  }
+  .greeting p {
+    margin: 0 0 10px;
+    font-size: 14px;
+    line-height: 1.9;
+  }
+
+  /* ステップカード */
+  .step-section {
+    margin: 30px 0;
+  }
+  .step-title {
+    text-align: center;
+    margin: 40px 0 20px;
+    position: relative;
+  }
+  .step-title h2 {
+    display: inline-block;
+    background: white;
+    padding: 10px 30px;
+    border-radius: 999px;
+    color: var(--purple-deep);
+    font-size: 20px;
+    font-weight: 900;
+    box-shadow: 0 6px 20px rgba(165,138,255,0.25);
+    margin: 0;
+  }
+  .step-card {
+    background: white;
+    border-radius: 20px;
+    padding: 24px 26px;
+    margin: 16px 0;
+    box-shadow: 0 6px 20px rgba(165,138,255,0.1);
+    border: 3px solid transparent;
+    position: relative;
+    transition: transform 0.2s;
+  }
+  .step-card:hover {
+    transform: translateY(-3px);
+  }
+  .step-num {
+    position: absolute;
+    top: -18px;
+    left: 24px;
+    background: linear-gradient(135deg, #FFD700, #FFB800);
+    color: white;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 18px;
+    box-shadow: 0 6px 16px rgba(255,184,0,0.4);
+    border: 3px solid white;
+  }
+  .step-card h3 {
+    margin: 10px 0 12px;
+    color: var(--pink-deep);
+    font-size: 17px;
+    font-weight: 900;
+  }
+  .step-card p {
+    margin: 0 0 12px;
+    font-size: 14px;
+    line-height: 1.8;
+  }
+
+  /* プロンプトボックス */
+  .prompt-box {
+    position: relative;
+    background: linear-gradient(135deg, #FFF8FB, #FFE4F0);
+    border: 2px dashed var(--pink);
+    border-radius: 16px;
+    padding: 20px 22px;
+    margin: 14px 0;
+    font-family: "SF Mono", "Menlo", monospace;
+    font-size: 13px;
+    line-height: 1.7;
+    white-space: pre-wrap;
+    color: var(--text);
+  }
+  .copy-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: linear-gradient(135deg, var(--pink), var(--pink-deep));
+    color: white;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 999px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 700;
+    font-family: inherit;
+    box-shadow: 0 4px 12px rgba(255,91,150,0.3);
+    transition: transform 0.2s;
+  }
+  .copy-btn:hover {
+    transform: scale(1.05);
+  }
+  .copy-btn.copied {
+    background: linear-gradient(135deg, var(--ok), #059669);
+  }
+
+  /* サンプル画像セクション */
+  .sample {
+    background: white;
+    border-radius: 24px;
+    padding: 28px;
+    margin: 30px 0;
+    text-align: center;
+    box-shadow: 0 8px 24px rgba(255,151,183,0.15);
+  }
+  .sample h3 {
+    color: var(--pink-deep);
+    margin: 0 0 16px;
+    font-size: 18px;
+    font-weight: 900;
+  }
+  .sample .image-placeholder {
+    background: linear-gradient(135deg, #FFE4F0, #EBDEFF);
+    border: 3px dashed var(--pink);
+    border-radius: 16px;
+    padding: 60px 20px;
+    color: var(--text-light);
+    font-size: 14px;
+  }
+  .sample .image-placeholder strong {
+    display: block;
+    font-size: 16px;
+    color: var(--pink-deep);
+    margin-bottom: 6px;
+  }
+
+  /* カラー候補セクション */
+  .color-section {
+    background: white;
+    border-radius: 20px;
+    padding: 24px 26px;
+    margin: 20px 0;
+    box-shadow: 0 6px 20px rgba(165,138,255,0.1);
+  }
+  .color-section h3 {
+    color: var(--purple-deep);
+    margin: 0 0 16px;
+    font-size: 16px;
+  }
+  .color-row {
+    display: flex;
+    gap: 8px;
+    margin: 10px 0;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .color-swatch {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #f9f7ff;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+  }
+  .color-swatch .circle {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 1px solid rgba(0,0,0,0.1);
+  }
+
+  /* CTAセクション */
+  .cta {
+    background: linear-gradient(135deg, #FFD700, #FFB800);
+    border-radius: 24px;
+    padding: 30px;
+    margin: 30px 0;
+    text-align: center;
+    box-shadow: 0 12px 32px rgba(255,184,0,0.3);
+    position: relative;
+    overflow: hidden;
+  }
+  .cta::before {
+    content: '✨';
+    position: absolute;
+    top: 10px;
+    left: 15px;
+    font-size: 30px;
+    opacity: 0.4;
+  }
+  .cta::after {
+    content: '✨';
+    position: absolute;
+    bottom: 10px;
+    right: 15px;
+    font-size: 30px;
+    opacity: 0.4;
+  }
+  .cta h2 {
+    color: white;
+    margin: 0 0 12px;
+    font-size: 22px;
+    font-weight: 900;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  .cta p {
+    color: white;
+    margin: 0 0 20px;
+    font-size: 14px;
+    opacity: 0.95;
+  }
+  .cta .btn {
+    display: inline-block;
+    background: white;
+    color: var(--pink-deep);
+    padding: 14px 32px;
+    border-radius: 999px;
+    font-weight: 900;
+    font-size: 15px;
+    text-decoration: none;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    transition: transform 0.2s;
+  }
+  .cta .btn:hover {
+    transform: scale(1.05);
+  }
+  .price-tag {
+    display: inline-block;
+    background: var(--accent);
+    color: white;
+    padding: 4px 14px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+
+  /* SNSセクション */
+  .sns {
+    background: white;
+    border-radius: 20px;
+    padding: 24px;
+    margin: 20px 0;
+    text-align: center;
+    box-shadow: 0 6px 20px rgba(165,138,255,0.1);
+  }
+  .sns h3 {
+    color: var(--purple-deep);
+    margin: 0 0 14px;
+    font-size: 17px;
+  }
+  .sns-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+  }
+  .sns-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: linear-gradient(135deg, #FFE4F0, #EBDEFF);
+    padding: 8px 18px;
+    border-radius: 999px;
+    text-decoration: none;
+    color: var(--text);
+    font-size: 13px;
+    font-weight: 700;
+    transition: transform 0.2s;
+  }
+  .sns-link:hover {
+    transform: translateY(-2px);
+  }
+
+  /* フッター */
+  footer {
+    text-align: center;
+    padding: 30px 0 10px;
+    color: var(--text-light);
+    font-size: 12px;
+  }
+  footer .heart {
+    color: var(--pink-deep);
+  }
+
+  /* Tips ボックス */
+  .tip {
+    background: linear-gradient(135deg, #FFF8E1, #FFF3C4);
+    border-left: 4px solid var(--gold-deep);
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin: 14px 0;
+    font-size: 13px;
+  }
+  .tip strong {
+    color: var(--gold-deep);
+    display: inline-block;
+    margin-right: 4px;
+  }
+
+  @media (max-width: 600px) {
+    .hero h1 { font-size: 22px; }
+    .hero { padding: 40px 24px; }
+    .step-card { padding: 22px 20px; }
+    .step-num { width: 40px; height: 40px; font-size: 16px; }
+    .prompt-box { font-size: 12px; padding: 16px 18px; }
+    .copy-btn { padding: 6px 14px; font-size: 11px; }
+    .cta h2 { font-size: 18px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- キラキラ背景アニメーション -->
+<div class="sparkle-bg" aria-hidden="true">
+  <span class="sparkle">✨</span>
+  <span class="sparkle">🌸</span>
+  <span class="sparkle">⭐️</span>
+  <span class="sparkle">💫</span>
+  <span class="sparkle">🌟</span>
+  <span class="sparkle">✨</span>
+  <span class="sparkle">💖</span>
+  <span class="sparkle">🌙</span>
+  <span class="sparkle">⭐️</span>
+  <span class="sparkle">✨</span>
+  <span class="sparkle">🌸</span>
+  <span class="sparkle">💫</span>
+  <span class="sparkle">🌟</span>
+  <span class="sparkle">💖</span>
+  <span class="sparkle">✨</span>
+  <span class="sparkle">⭐️</span>
+  <span class="sparkle">🌸</span>
+  <span class="sparkle">💫</span>
+  <span class="sparkle">✨</span>
+  <span class="sparkle">🌙</span>
+  <span class="sparkle-dot"></span>
+  <span class="sparkle-dot"></span>
+  <span class="sparkle-dot"></span>
+  <span class="sparkle-dot"></span>
+  <span class="sparkle-dot"></span>
+  <span class="sparkle-dot"></span>
+  <span class="sparkle-dot"></span>
+  <span class="sparkle-dot"></span>
+  <span class="sparkle-dot"></span>
+  <span class="sparkle-dot"></span>
+</div>
+
+<div class="container">
+
+  <!-- ヒーロー -->
+  <section class="hero">
+    <div class="hero-content">
+      <span class="ribbon">🎁 プロンプトプレゼント</span>
+      <h1>あなたを魔法少女に<br>変身させる✨</h1>
+      <p class="subtitle">ChatGPT Image 2.0 × GPT-5.5 Thinking で<br>自分だけのオリジナル魔法少女を生成！</p>
+      <span class="from">🌸 アイカ🌸AI最前線ラボより</span>
+    </div>
+  </section>
+
+  <!-- サンプル画像（完成イメージ） -->
+  <section class="sample-showcase">
+    <span class="sample-label">✨ こんな画像ができます ✨</span>
+    <h3>星導のAI魔法少女 アイカ</h3>
+    <p class="sample-sub">ミラクル☆プロフィールボード</p>
+    <div class="sample-image-wrap">
+      <img src="aika_sample.png" alt="アイカの魔法少女化サンプル画像">
+    </div>
+    <p class="sample-caption">
+      🌸 このクオリティを、あなたも自分バージョンで作れます 🌸
+    </p>
+  </section>
+
+  <!-- 挨拶 -->
+  <section class="greeting">
+    <h2>受け取ってくれてありがとう💖</h2>
+    <p>
+      アイカ🌸AI最前線ラボへようこそ！<br>
+      このページでは、ChatGPTで
+      <strong>自分だけの魔法少女設定資料集</strong>を
+      生成するプロンプトを全公開しています。
+    </p>
+    <p>
+      ボタン1つでコピーできるから、
+      ChatGPTに貼り付けるだけでOK🌸<br>
+      下のステップ通りに進めてみてね✨
+    </p>
+  </section>
+
+  <!-- STEP 1 -->
+  <div class="step-title">
+    <h2>🌟 STEP 1 🌟</h2>
+  </div>
+  <div class="step-card">
+    <div class="step-num">1</div>
+    <h3>ChatGPTで「画像」モードに切り替える</h3>
+    <p>
+      ChatGPTアプリ or Web版を開いて、
+      <strong>画像生成モード</strong>に切り替えます💖
+    </p>
+
+    <div style="background:#F9F5FF;border-radius:12px;padding:16px 20px;margin:14px 0;">
+      <h4 style="margin:0 0 10px;color:var(--purple-deep);font-size:14px;">📱 切り替え方法</h4>
+      <ul style="margin:0;padding-left:20px;font-size:13px;line-height:1.9;">
+        <li><strong>スマホアプリ：</strong>入力欄の「+」ボタン →「画像を作成する」を選択</li>
+        <li><strong>PCブラウザ：</strong>入力欄下の「ツール」→「画像を作成する」を選択</li>
+      </ul>
+    </div>
+
+    <div class="tip">
+      <strong>💡 重要：</strong>このプロンプトは<strong>画像モードでないと機能しません</strong>。通常のチャットだとテキスト回答になってしまうので、必ず画像生成モードに切り替えてくださいね🌸
+    </div>
+
+    <div class="tip" style="background: linear-gradient(135deg, #FFE4F0, #FFD6E8);border-left-color:var(--pink-deep);">
+      <strong>✨ Plus加入者のコツ：</strong>Thinkingモード（GPT-5.5）にすると、さらに深く考えて独創的な設定を作ってくれます🌸
+    </div>
+
+    <div style="background: linear-gradient(135deg, #FFF0F5, #FFE4F0); border: 2px dashed var(--pink-deep); border-radius: 14px; padding: 18px 22px; margin: 18px 0;">
+      <h4 style="margin:0 0 10px; color:var(--pink-deep); font-size:15px;">⚠️ 失敗しないための重要ポイント</h4>
+      <ol style="margin:0; padding-left:22px; font-size:13px; line-height:1.9;">
+        <li>必ず<strong>新しいチャット</strong>を開いてから実行してください（過去の会話履歴の影響を受けないため）</li>
+        <li>プロンプト内の<strong>「（お好きな名前）」などは必ずご自分の情報に書き換えて</strong>ください</li>
+        <li>「自分の情報を使って」と明示的に指示すると、より正確に反映されます</li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="step-title">
+    <h2>🌟 STEP 2 🌟</h2>
+  </div>
+
+  <!-- パターン選択ガイド -->
+  <div style="background: white; border-radius: 20px; padding: 24px 26px; margin: 16px 0; box-shadow: 0 6px 20px rgba(165,138,255,0.1); text-align:center;">
+    <h3 style="color: var(--pink-deep); margin: 0 0 10px; font-size: 18px; font-weight: 900;">🎀 お好きなパターンを選んでね 🎀</h3>
+    <p style="margin: 0 0 16px; font-size: 14px;">
+      下の<strong>2つのプロンプト</strong>から、あなたに合う方を選んでコピペするだけ！
+    </p>
+    <div style="display: grid; grid-template-columns: 1fr; gap: 12px; text-align:left; font-size: 13px;">
+      <div style="background: linear-gradient(135deg, #FFF0F5, #FFE4F0); padding: 14px 18px; border-radius: 12px; border-left: 4px solid var(--pink-deep);">
+        <strong style="color: var(--pink-deep);">🌸 パターン①：自分で情報入力</strong><br>
+        <span style="color: var(--text-light); font-size: 12px;">
+          → 確実に自分のキャラを作りたい人<br>
+          → ChatGPTを使い始めたばかりの人<br>
+          → 無料版ユーザー・Plus加入者どちらでもOK
+        </span>
+      </div>
+      <div style="background: linear-gradient(135deg, #F9F5FF, #EFE4FF); padding: 14px 18px; border-radius: 12px; border-left: 4px solid var(--purple-deep);">
+        <strong style="color: var(--purple-deep);">💜 パターン②：会話履歴から自動生成</strong><br>
+        <span style="color: var(--text-light); font-size: 12px;">
+          → ChatGPTを日常的に使っている人<br>
+          → 情報入力が面倒な人<br>
+          → 意外な発見を楽しみたい人（Plus加入者におすすめ）
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- パターン① -->
+  <div class="step-card" style="border-left: 5px solid var(--pink-deep);">
+    <div class="step-num" style="background: linear-gradient(135deg, var(--pink), var(--pink-deep));">①</div>
+    <h3>🌸 パターン①：自分で情報入力するバージョン</h3>
+    <p>
+      下のボタンで<strong>1回コピー</strong>して、ChatGPTに貼り付け💖<br>
+      空欄を自分の情報に書き換えてから送信するだけ🌸
+    </p>
+
+    <div class="prompt-box" id="promptAll"><button class="copy-btn" onclick="copyPrompt('promptAll', this)">📋 パターン①をコピー</button>私についての情報：
+・名前：（お好きな名前）
+・性格を3つのキーワードで：（例：新し物好き、好奇心旺盛、マイペース）
+・好きなもの3つ：（例：お菓子、猫、映画）
+・嫌いなもの2つ：（例：虫、早起き）
+・仕事：（職業・学生OK）
+・大切にしている価値観：（例：毎日楽しく過ごしたい）
+
+上記の情報をもとに、横長4:3の一枚絵で、
+「魔法少女プロフィールボード／設定資料集」風の
+画像を作成してください。
+
+90年代少女向け変身ヒロインアニメを想起させる、
+オリジナルの魔法少女キャラクターとして
+デザインしてください。
+
+━━━━━━━━━━━━
+■ 画面内に入れるパネル
+━━━━━━━━━━━━
+
+【タイトル】
+[キャラクター名] / [サブタイトル]
+
+【基本プロフィール】
+守護惑星 / 守護星座 / 戦士名
+属性 / 戦う理由 / 弱点
+
+【キャラクター全身立ち絵】
+中央に大きく配置
+
+【表情いろいろ】
+にっこり / ウィンク / びっくり
+真剣 / 照れ / 笑顔
+
+【変身シーン】
+演出の描写 / 変身セリフ
+
+【武器】
+武器名 / 単体イラスト
+
+【必殺技】
+必殺技1 / 必殺技2 / 必殺技3
+
+【好きなもの】
+3つ
+
+【苦手なもの】
+2つ
+
+【チャームポイント】
+性格を3つ
+
+【可愛いポイント／弱点ミニ漫画】
+2コマ漫画風演出
+
+━━━━━━━━━━━━
+■ デザイン指定
+━━━━━━━━━━━━
+・メインカラー：[ピンク/パープル/ゴールド 等]
+・90年代なかよし付録の雰囲気
+・星、月、花、リボン、宝石、きらめきを散りばめる
+・装飾フレーム付きパネルで華やかに
+
+━━━━━━━━━━━━
+■ 仕上げ指定
+━━━━━━━━━━━━
+・日本語テキストを自然で読みやすく
+・各パネルを見やすく整理
+・中央の全身キャラを最も目立たせる
+・キャラクターグッズの表紙のような完成度
+・既存作品のキャラは再現しない（オリジナルで）
+
+━━━━━━━━━━━━
+■ 品質・ノイズ抑制（重要）
+━━━━━━━━━━━━
+・上品で洗練された仕上がり
+・ギラつき・過剰な光沢を抑える
+・装飾は華やかでも、キャラクターを最も目立たせる
+・色彩はエレガントで調和の取れたもの
+・過剰な特殊効果（星・キラキラ）を控えめに
+・クリアで整ったコンポジション
+・少女漫画の上品なタッチを再現</div>
+
+    <div class="tip">
+      <strong>💡 コツ：</strong>カラー指定を変えるだけで雰囲気が激変！自分の好きな色で試してみて✨
+    </div>
+  </div>
+
+  <!-- パターン② -->
+  <div class="step-card" style="background: linear-gradient(135deg, #FFFFFF, #F9F5FF); border-left: 5px solid var(--purple-deep);">
+    <div class="step-num" style="background: linear-gradient(135deg, var(--purple), var(--purple-deep));">②</div>
+    <h3>💜 パターン②：会話履歴から自動生成するバージョン</h3>
+    <p>
+      ChatGPTと日常的にやり取りしている方におすすめ💖<br>
+      <strong>過去の会話から自動で性格を分析</strong>してくれるので、<br>
+      情報入力なしで自分らしい魔法少女ができます✨
+    </p>
+
+    <div class="prompt-box" id="promptMemory" style="border-color:var(--purple);"><button class="copy-btn" onclick="copyPrompt('promptMemory', this)" style="background: linear-gradient(135deg, var(--purple), var(--purple-deep));">📋 パターン②をコピー</button>ChatGPTのメモリ機能に保存されている
+私についての情報や、これまでの会話履歴から
+私の性格・好み・価値観を分析してください。
+
+（もしメモリがない場合や情報が不足している場合は、
+質問して教えてもらってください）
+
+分析結果を元に、横長4:3の一枚絵で、
+「魔法少女プロフィールボード／設定資料集」風の
+画像を作成してください。
+
+90年代少女向け変身ヒロインアニメを想起させる、
+オリジナルの魔法少女キャラクターとして
+デザインしてください。
+
+━━━━━━━━━━━━
+■ 画面内に入れるパネル
+━━━━━━━━━━━━
+
+【タイトル】
+[キャラクター名] / [サブタイトル]
+
+【基本プロフィール】
+守護惑星 / 守護星座 / 戦士名
+属性 / 戦う理由 / 弱点
+
+【キャラクター全身立ち絵】
+中央に大きく配置
+
+【表情いろいろ】
+にっこり / ウィンク / びっくり
+真剣 / 照れ / 笑顔
+
+【変身シーン】
+演出の描写 / 変身セリフ
+
+【武器】
+武器名 / 単体イラスト
+
+【必殺技】
+必殺技1 / 必殺技2 / 必殺技3
+
+【好きなもの】
+3つ
+
+【苦手なもの】
+2つ
+
+【チャームポイント】
+性格を3つ
+
+【可愛いポイント／弱点ミニ漫画】
+2コマ漫画風演出
+
+━━━━━━━━━━━━
+■ デザイン指定
+━━━━━━━━━━━━
+・メインカラー：[ピンク/パープル/ゴールド 等]
+・90年代なかよし付録の雰囲気
+・星、月、花、リボン、宝石、きらめきを散りばめる
+・装飾フレーム付きパネルで華やかに
+
+━━━━━━━━━━━━
+■ 仕上げ指定
+━━━━━━━━━━━━
+・日本語テキストを自然で読みやすく
+・各パネルを見やすく整理
+・中央の全身キャラを最も目立たせる
+・キャラクターグッズの表紙のような完成度
+・既存作品のキャラは再現しない（オリジナルで）
+
+━━━━━━━━━━━━
+■ 品質・ノイズ抑制（重要）
+━━━━━━━━━━━━
+・上品で洗練された仕上がり
+・ギラつき・過剰な光沢を抑える
+・装飾は華やかでも、キャラクターを最も目立たせる
+・色彩はエレガントで調和の取れたもの
+・過剰な特殊効果（星・キラキラ）を控えめに
+・クリアで整ったコンポジション
+・少女漫画の上品なタッチを再現</div>
+
+    <div class="tip" style="background: linear-gradient(135deg, #F9F5FF, #EFE4FF); border-left-color:var(--purple-deep);">
+      <strong>💡 使うタイミング：</strong>ChatGPTと長く話していて、自分のことをよく知ってもらっている人向け！自分で書くより意外な発見があって楽しいですよ🌸
+    </div>
+
+    <div class="tip">
+      <strong>⚠️ 注意：</strong>メモリ機能をOFFにしている方や、新しいアカウントの方は、<strong>パターン①</strong>を使ってください✨
+    </div>
+  </div>
+
+  <!-- カラー候補 -->
+  <section class="color-section">
+    <h3>🎨 おすすめカラーパレット</h3>
+    <div class="color-row">
+      <span class="color-swatch">
+        <span class="circle" style="background:#FF97B7;"></span>ピンク
+      </span>
+      <span class="color-swatch">
+        <span class="circle" style="background:#A58AFF;"></span>パープル
+      </span>
+      <span class="color-swatch">
+        <span class="circle" style="background:#FFD700;"></span>ゴールド
+      </span>
+      <span style="font-size:12px;color:var(--text-light);">→ ロイヤル可愛い系</span>
+    </div>
+    <div class="color-row">
+      <span class="color-swatch">
+        <span class="circle" style="background:#B2E8FF;"></span>水色
+      </span>
+      <span class="color-swatch">
+        <span class="circle" style="background:#C9FFC9;"></span>ミント
+      </span>
+      <span class="color-swatch">
+        <span class="circle" style="background:#FFFFFF;border-color:#ccc;"></span>ホワイト
+      </span>
+      <span style="font-size:12px;color:var(--text-light);">→ さわやか系</span>
+    </div>
+    <div class="color-row">
+      <span class="color-swatch">
+        <span class="circle" style="background:#1a1a2e;"></span>ダーク
+      </span>
+      <span class="color-swatch">
+        <span class="circle" style="background:#E63946;"></span>レッド
+      </span>
+      <span class="color-swatch">
+        <span class="circle" style="background:#FFD700;"></span>ゴールド
+      </span>
+      <span style="font-size:12px;color:var(--text-light);">→ クール系</span>
+    </div>
+  </section>
+
+  <!-- STEP 3 -->
+  <div class="step-title">
+    <h2>🌟 STEP 3 🌟</h2>
+  </div>
+  <div class="step-card">
+    <div class="step-num">3</div>
+    <h3>Image 2.0で生成！</h3>
+    <p>
+      ChatGPT（Plus以上）の<strong>Image 2.0モード</strong>に切り替えて、
+      生成ボタンをクリック💖<br>
+      数十秒で、世界に1つの魔法少女があなたのものに✨
+    </p>
+
+    <div class="tip">
+      <strong>✨ 仕上げのコツ：</strong>生成結果がイマイチだった時は「もっと可愛く」「もっとクール系で」など追加指示を送ると調整できます。
+    </div>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="step-title">
+    <h2>🌟 STEP 4 🌟</h2>
+  </div>
+  <div class="step-card">
+    <div class="step-num">4</div>
+    <h3>作品をシェアしてね🌸</h3>
+    <p>
+      できあがった魔法少女、ぜひ見せてください💖<br>
+      Threads・X・Instagramで以下のタグ付けすると、
+      アイカがリポスト＆コメントします！
+    </p>
+
+    <div class="prompt-box" id="prompt3"><button class="copy-btn" onclick="copyPrompt('prompt3', this)">📋 コピー</button>@aika_ai_labo #アイカ魔法少女化</div>
+
+    <div class="tip">
+      <strong>🎁 ボーナス：</strong>素敵な作品は公式でピックアップ紹介！フォロワーも増えるチャンス✨
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <section class="cta">
+    <h2>もっとプロンプトが欲しい？</h2>
+    <p>
+      ChatGPT Image 2.0で使える<br>
+      <strong>実用プロンプト37選</strong>をNote記事で公開中🌸
+    </p>
+    <a href="https://note.com/aika_ai_labo" class="btn" target="_blank">
+      Noteで完全版を見る
+      <span class="price-tag">500円</span>
+    </a>
+    <p style="font-size:12px;margin-top:16px;">
+      SNS投稿用・ビジネス用・キャラ化・バイラル系<br>
+      ジャンル別にカテゴリ分けされた濃密な1本✨
+    </p>
+  </section>
+
+  <!-- SNS -->
+  <section class="sns">
+    <h3>🌸 アイカのSNSもチェック</h3>
+    <p style="font-size:13px;margin:0 0 14px;">毎日AIの最新情報を発信中📮</p>
+    <div class="sns-links">
+      <a href="https://x.com/aika_ai_labo" class="sns-link" target="_blank">🐦 X</a>
+      <a href="https://www.threads.com/@aika_ai_labo" class="sns-link" target="_blank">🧵 Threads</a>
+      <a href="https://instagram.com/aika_ai_labo" class="sns-link" target="_blank">📷 Instagram</a>
+      <a href="https://www.tiktok.com/@aika_ai_labo" class="sns-link" target="_blank">🎬 TikTok</a>
+      <a href="https://youtube.com/@aika_ai_labo" class="sns-link" target="_blank">📺 YouTube</a>
+      <a href="https://note.com/aika_ai_labo" class="sns-link" target="_blank">📝 Note</a>
+    </div>
+  </section>
+
+  <footer>
+    <p>
+      <span class="heart">♡</span>
+      Created with love by アイカ🌸AI最前線ラボ
+      <span class="heart">♡</span>
+    </p>
+    <p>毎朝7時、AIの今を3分で</p>
+  </footer>
+
+</div>
+
+<script>
+function copyPrompt(id, btn) {
+  const el = document.getElementById(id);
+  // Remove the button text from the copy content
+  let text = el.innerText || el.textContent;
+  const btnText = btn.textContent;
+  text = text.replace(btnText, '').trim();
+
+  navigator.clipboard.writeText(text).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = '✨ コピー完了！';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = orig;
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+</script>
+</body>
+</html>
